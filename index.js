@@ -1,3 +1,5 @@
+const GRID_SIZE = 9;
+
 class Coord {
     constructor(x, y) {
         this.x = x;
@@ -35,13 +37,13 @@ class Node {
 class Board {
 
     constructor() {
-        this.board = new Array(9);
-        for (let i = 0; i < 9; i++) {
+        this.board = new Array(GRID_SIZE);
+        for (let i = 0; i < GRID_SIZE; i++) {
 
-            let nodeCol = new Array(9);
-            for (let j = 0; j < 9; j++) {
+            let nodeCol = new Array(GRID_SIZE);
+            for (let j = 0; j < GRID_SIZE; j++) {
 
-                let rand = Math.floor(Math.random() * 10) % 9 + 1;
+                let rand = Math.floor(Math.random() * 10) % GRID_SIZE + 1;
                 nodeCol[j] = new Node({
                     coord: new Coord(i, j),
                     value: rand,
@@ -59,8 +61,8 @@ class Board {
     }
 
     print() {
-        for (let j = 0; j < 9; j++) {
-            for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < GRID_SIZE; j++) {
+            for (let i = 0; i < GRID_SIZE; i++) {
                 console.log(
                     "Coord: (" + 
                     this.board[i][j].coord.x + 
@@ -73,48 +75,60 @@ class Board {
         }
     }
 
-    checkRow(y) {
-        let list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-        for (let i = 0; i < 9; i++) {
-            if (list.contains(this.board[i][y].value)) {
-                list.splice(this.board[i][y].value - 1, 1);
-            }
+    isNumberInRow(row, val) {
+        for (let i = 0; i < GRID_SIZE; i++) {
+            if (this.board[row][i].value == val) 
+                return true;
         }
-
-        if (list.length > 0) return list;
+        return false;
     }
 
-    checkCol(x) {
-        let list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-        for (let i = 0; i < 9; i++) {
-            if (list.contains(this.board[x][i].value)) {
-                list = list.slice(this.board[x][i].value - 1, 1);
-            }
+    isNumberInCol(col, val) {
+        for (let i = 0; i < GRID_SIZE; i++) {
+            if (this.board[i][col].value == val) 
+                return true;
         }
-
-        if (list.length > 0) return list;
+        return false;
     }
 
-    checkSquare(square) {
-        /*  0 1 2
-            3 4 5
-            6 7 8  */
+    isNumberInSquare(col, row, val) {
+        let localRow = row - row % 3;
+        let localCol = col - col % 3;
 
-        let list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let xStart = (square % 3) * 3;
-        let yStart = square - square % 3;
+        for (let j = localRow; j < localRow + 3; j++) {
+            for (let i = localCol; i < localCol + 3; i++) {
+                if (this.board[i][j].value == val)
+                    return true;
+            }
+        }
+        return false;
+    }
 
-        for (let i = xStart; i < xStart + 3; i++) {
-            for (let j = yStart; j < yStart + 3; j++) {
-                if (list.contains(this.board[i][j].value)) {
-                    list = list.slice(this.board[i][j].value - 1, 1);
+    isValidPlacement(col, row, val) {
+        return  !this.isNumberInCol(col, val) &&
+                !this.isNumberInRow(row, val) &&
+                !this.isNumberInSquare(col, row, val);
+    }
+
+    solveBoard() {
+        for (let row = 0; row < GRID_SIZE; row++) {
+            for (let col = 0; col < GRID_SIZE; col++) {
+                if (this.board[col][row].value == 0) {
+                    for (let tryNum = 1; tryNum <= GRID_SIZE; tryNum++) {
+                        if (this.isValidPlacement(tryNum, col, row)) {
+                            this.board[col][row].value = tryNum;
+                            if (this.solveBoard()) {
+                                return true;
+                            } else {
+                                this.board[col][row].value = 0;
+                            }
+                        }
+                    }
+                    return false;
                 }
             }
         }
-
-        if (list.length > 0) return list;
+        return true;
     }
 
     renderCells() {
@@ -122,12 +136,14 @@ class Board {
         let output = document.createDocumentFragment();
         let input = document.createDocumentFragment();
 
-        for (let i = 0; i < 9; i++){
-            for (let j = 0; j < 9; j++) {
+        for (let i = 0; i < GRID_SIZE; i++){
+            for (let j = 0; j < GRID_SIZE; j++) {
 
                 let cellInput = document.createElement('input');
-                cellInput.type = 'text';
+                cellInput.type = 'number';
                 cellInput.id = 'input-c' + i + 'r' + j;
+                cellInput.min = '1';
+                cellInput.max = '9';
                 cellInput.classList.add('grid-item');
 
                 let cell = document.createElement('div');
@@ -164,8 +180,16 @@ class Board {
             }
         }
 
+        let submit = document.createElement('input');
+        submit.type = 'submit';
+        submit.id = 'submit-button';
+        submit.classList.add('submit-btn');
+        input.appendChild(submit);
+
         document.getElementById('board-input').appendChild(input);
-        document.getElementById('board-output').appendChild(output);
+
+        // uncomment when used again
+        // document.getElementById('board-output').appendChild(output);
     }
 }
 
