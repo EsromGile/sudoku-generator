@@ -1,0 +1,49 @@
+body {
+    background: gray;
+}
+
+.board-row{
+    display: flex;
+    align-items: center;
+}
+
+/* ------------ grid ------------- */
+.grid-container {
+	display: grid;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    width: 450px;
+	grid-template-columns: repeat(9, 50px);
+    grid-template-rows: repeat(9, 50px);
+	padding: 0px;
+    border: 3px solid black;
+    background: black;
+    border-radius: 10px;
+}
+.grid-item {
+	background-color: lightgray;
+	border: 1px solid black;
+	padding: 13px 0;
+	font-size: 20px;
+	text-align: center;
+}
+.verticle-space {
+    border-left: 3px solid black;
+}
+.horizontal-space {
+    border-top: 3px solid black;
+}
+.top-left-edge {
+    border-top-left-radius: 7px;
+}
+.bottom-left-edge {
+    border-bottom-left-radius: 7px;
+}
+.top-right-edge {
+    border-top-right-radius: 7px;
+}
+.bottom-right-edge {
+    border-bottom-right-radius: 7px;
+}
+/* ------------------------------- */
