@@ -8,7 +8,7 @@ class Board {
 
     isNumberInRow(row, val) {
         for (let col = 0; col < GRID_SIZE; col++) {
-            if (this.board[col][row] == val) 
+            if (this.board[row][col] == val) 
                 return true;
         }
         return false;
@@ -16,42 +16,42 @@ class Board {
 
     isNumberInCol(col, val) {
         for (let row = 0; row < GRID_SIZE; row++) {
-            if (this.board[col][row] == val) 
+            if (this.board[row][col] == val) 
                 return true;
         }
         return false;
     }
 
-    isNumberInSquare(col, row, val) {
+    isNumberInSquare(row, col, val) {
         let localRow = row - row % 3;
         let localCol = col - col % 3;
 
-        for (let rowIndex = localRow; rowIndex < localRow + 3; rowIndex++) {
-            for (let colIndex = localCol; colIndex < localCol + 3; colIndex++) {
-                if (this.board[colIndex][rowIndex] == val)
+        for (let rowIndex = localRow; rowIndex < (localRow + 3); rowIndex++) {
+            for (let colIndex = localCol; colIndex < (localCol + 3); colIndex++) {
+                if (this.board[rowIndex][colIndex] == val)
                     return true;
             }
         }
         return false;
     }
 
-    isValidPlacement(col, row, val) {
+    isValidPlacement(row, col, val) {
         return  !this.isNumberInCol(col, val) &&
                 !this.isNumberInRow(row, val) &&
-                !this.isNumberInSquare(col, row, val);
+                !this.isNumberInSquare(row, col, val);
     }
 
     solveBoard() {
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++) {
-                if (this.board[col][row] == 0) {
+                if (this.board[row][col] == 0) {
                     for (let tryNum = 1; tryNum <= GRID_SIZE; tryNum++) {
-                        if (this.isValidPlacement(col, row, tryNum)) {
-                            this.board[col][row] = tryNum;
+                        if (this.isValidPlacement(row, col, tryNum)) {
+                            this.board[row][col] = tryNum;
                             if (this.solveBoard()) {
                                 return true;
                             } else {
-                                this.board[col][row] = 0;
+                                this.board[row][col] = 0;
                             }
                         }
                     }
@@ -59,6 +59,7 @@ class Board {
                 }
             }
         }
+        this.updateCells();
         return true;
     }
 
@@ -66,10 +67,10 @@ class Board {
     updateCells() {
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++) {
-                if (this.board[col][row] == 0) {
+                if (this.board[row][col] == 0) {
                     console.log("didn't update");
                 } else 
-                    document.getElementById('c'+col+'r'+row).textContent = this.board[col][row];
+                    document.getElementById('c'+col+'r'+row).textContent = this.board[row][col];
             }
         }
     }
@@ -80,8 +81,8 @@ class Board {
         let output = document.createDocumentFragment();
         let input = document.createDocumentFragment();
 
-        for (let col = 0; col < GRID_SIZE; col++){
-            for (let row = 0; row < GRID_SIZE; row++) {
+        for (let row = 0; row < GRID_SIZE; row++) {
+            for (let col = 0; col < GRID_SIZE; col++){
 
                 let cellInput = document.createElement('input');
                 cellInput.type = 'number';
@@ -93,31 +94,31 @@ class Board {
                 cell.classList.add('grid-item');
 
                 if (col % 3 == 0 && col != 0) {
-                    cell.classList.add('horizontal-space');
-                    cellInput.classList.add('horizontal-space');
-                }
-                if (row % 3 == 0 && row != 0) {
                     cell.classList.add('verticle-space');
                     cellInput.classList.add('verticle-space');
+                }
+                if (row % 3 == 0 && row != 0) {
+                    cell.classList.add('horizontal-space');
+                    cellInput.classList.add('horizontal-space');
                 }
 
                 if (col == 0 && row == 0) {
                     cell.classList.add('top-left-edge');
                     cellInput.classList.add('top-left-edge');
                 } else if (col == 0 && row == 8) {
-                    cell.classList.add('top-right-edge');
-                    cellInput.classList.add('top-right-edge');
-                } else if (col == 8 && row == 0) {
                     cell.classList.add('bottom-left-edge');
                     cellInput.classList.add('bottom-left-edge');
+                } else if (col == 8 && row == 0) {
+                    cell.classList.add('top-right-edge');
+                    cellInput.classList.add('top-right-edge');
                 } else if (col == 8 && row == 8) {
                     cell.classList.add('bottom-right-edge');
                     cellInput.classList.add('bottom-right-edge');
                 }
 
-                if (this.board[col][row] != 0)
-                    cell.textContent = this.board[col][row];
-                cellInput.placeholder = this.board[col][row];
+                if (this.board[row][col] != 0)
+                    cell.textContent = this.board[row][col];
+                cellInput.placeholder = this.board[row][col];
                 output.appendChild(cell);
                 input.appendChild(cellInput);
             }
@@ -134,23 +135,36 @@ class Board {
         // document.getElementById('board-input').appendChild(input);
         document.getElementById('board-output').appendChild(output);
     }
+
+    // print
+    print() {
+        for (let row = 0; row < GRID_SIZE; row++) {
+            let column = "";
+            for (let col = 0; col < GRID_SIZE; col++) {
+                if (col % 3 == 0 && col != 0)
+                    column += " ";
+                column += this.board[row][col];
+                // console.log("col: " + col + ", row: " + row + ", value: " + this.board[row][col]);
+            }
+            console.log(column);
+        }
+    }
 }
 
 
 let givens = [
-    [1, 7, 0, 0, 0, 0, 0, 2, 5 ],
-    [0, 0, 0, 0, 2, 1, 4, 0, 0 ],
-    [8, 0, 2, 0, 6, 0, 0, 1, 0 ],
-    [2, 0, 6, 0, 0, 0, 8, 0, 0 ],
-    [0, 0, 5, 0, 7, 0, 2, 0, 0 ],
-    [0, 0, 0, 1, 0, 0, 3, 0, 9 ],
-    [0, 0, 0, 0, 1, 0, 5, 0, 6 ],
-    [0, 0, 8, 3, 4, 0, 0, 0, 0 ],
-    [7, 5, 0, 0, 0, 0, 0, 4, 3 ]
+    [7, 0, 2, 0, 5, 0, 6, 0, 0 ],
+    [0, 0, 0, 0, 0, 3, 0, 0, 0 ],
+    [1, 0, 0, 0, 0, 9, 5, 0, 0 ],
+    [8, 0, 0, 0, 0, 0, 0, 9, 0 ],
+    [0, 4, 3, 0, 0, 0, 7, 5, 0 ],
+    [0, 9, 0, 0, 0, 0, 0, 0, 8 ],
+    [0, 0, 9, 7, 0, 0, 0, 0, 5 ],
+    [0, 0, 0, 2, 0, 0, 0, 0, 0 ],
+    [0, 0, 7, 0, 4, 0, 2, 0, 3 ]
 ];
 
 
 let board = new Board(givens);
 board.renderCells();
 console.log(board.solveBoard());
-board.updateCells();
