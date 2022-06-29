@@ -1,4 +1,5 @@
 const GRID_SIZE = 9;
+const GIVEN_NUMBER = 20;
 
 class Board {
 
@@ -59,7 +60,6 @@ class Board {
                 }
             }
         }
-        this.updateCells();
         return true;
     }
 
@@ -151,8 +151,31 @@ class Board {
     }
 }
 
+class Coord {
+    constructor(y, x) {
+        this.x = x;
+        this.y = y;
+    }
+}
 
-let givens = [
+function genereateBoard() {
+
+    // generate coordinates to populate
+
+    // loop
+    //      generate values at coordinates
+    //      try to solve board
+
+    // if solvable, make sure unique
+    // return board
+    
+}
+
+/*  ------------------------------------------
+    ############### TESTING #################
+    ------------------------------------------ */
+
+let testBoard = [
     [7, 0, 2, 0, 5, 0, 6, 0, 0 ],
     [0, 0, 0, 0, 0, 3, 0, 0, 0 ],
     [1, 0, 0, 0, 0, 9, 5, 0, 0 ],
@@ -164,7 +187,7 @@ let givens = [
     [0, 0, 7, 0, 4, 0, 2, 0, 3 ]
 ];
 
-
-let board = new Board(givens);
+let board = new Board(testBoard);
 board.renderCells();
-console.log(board.solveBoard());
+board.solveBoard();
+board.updateCells();
