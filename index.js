@@ -1,4 +1,5 @@
 const GRID_SIZE = 9;
+const GIVEN_NUM = 20;
 
 class Board {
 
@@ -40,6 +41,18 @@ class Board {
                 !this.isNumberInRow(row, val) &&
                 !this.isNumberInSquare(row, col, val);
     }
+
+    // maybe I don't need this??
+    // solvable() {
+
+        
+
+    //     for (let row = 0; row < GRID_SIZE; row++) {
+    //         for (let col = 0; col < GRID_SIZE; col++) {
+                
+    //         }
+    //     }
+    // }
 
     solveBoard() {
         for (let row = 0; row < GRID_SIZE; row++) {
@@ -195,16 +208,39 @@ function genereateBoard() {
    
    // try and solve the board
     let board = new Board(givens);
-    let solvable = board.solveBoard();''
-
-    // returning to test generation
-    if (solvable) {
-        return board;
-    }
+    board.solveBoard();
 
     // TODO: systematically remove elements and return solvable board
         // may need to check solvability after each removal to make sure it is unique
+    
+    while (true) {
 
+        let count = 81 - GIVEN_NUM;
+        while (count != 0) {
+            
+            let row = Math.floor(Math.random() * GRID_SIZE);
+            let col = Math.floor(Math.random() * GRID_SIZE);
+        
+            if (board.board[row][col] != 0) {
+                count--;
+                board.board[row][col] = 0;
+            }
+        }
+
+        let matrix = new Array(GRID_SIZE);
+        for (let row = 0; row < GRID_SIZE; row++) {
+            matrix[row] = new Array(GRID_SIZE);
+            for (let col = 0; col < GRID_SIZE; col++) {
+                matrix[row][col] = board.board[row][col];
+            }
+        }
+        let testBoard = new Board(matrix);
+
+        // test to make sure that the boards are unique enought to solve again
+        if (testBoard.solveBoard()) {
+            return board;
+        }
+    }
 }
 
 /*  ------------------------------------------
@@ -223,9 +259,7 @@ let testBoard = [
     [0, 0, 7, 0, 4, 0, 2, 0, 3 ]
 ];
 
-// let board = new Board(testBoard);
-// board.renderCells();
-// board.solveBoard();
-// board.updateCells();
 let boardGen = genereateBoard();
 boardGen.renderCells();
+// boardGen.solveBoard();
+// boardGen.updateCells();
