@@ -1,5 +1,4 @@
 const GRID_SIZE = 9;
-const GIVEN_NUMBER = 20;
 
 class Board {
 
@@ -63,7 +62,6 @@ class Board {
         return true;
     }
 
-    // this works
     updateCells() {
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++) {
@@ -75,7 +73,6 @@ class Board {
         }
     }
 
-    // this works
     renderCells() {
         
         let output = document.createDocumentFragment();
@@ -136,7 +133,6 @@ class Board {
         document.getElementById('board-output').appendChild(output);
     }
 
-    // print
     print() {
         for (let row = 0; row < GRID_SIZE; row++) {
             let column = "";
@@ -160,15 +156,55 @@ class Coord {
 
 function genereateBoard() {
 
-    // generate coordinates to populate
+    // create board object & initialize values to 0
+    let givens = new Array(GRID_SIZE);
+    for (let i = 0; i < GRID_SIZE; i++) {
+        givens[i] = new Array(GRID_SIZE);
+        for (let j = 0; j < GRID_SIZE; j++) {
+            givens[i][j] = 0;
+        }
+    }
 
-    // loop
-    //      generate values at coordinates
-    //      try to solve board
+    // generate diagonal square elements: squares 0, 4, 8
+    for (let i = 0; i < 3; i++) {
+        let localCol = i * 3;
+        let localRow = i * 3;
 
-    // if solvable, make sure unique
-    // return board
+        let arrayLength = GRID_SIZE;
+        let array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        for (let row = localRow; row < localRow + 3; row++) {
+            for (let col = localCol; col < localCol + 3; col++) {
+                let rand = Math.floor(Math.random() * arrayLength--);
+                givens[row][col] = array.splice(rand, 1);
+            }
+        }
+    }
+
+    /*  
+    should hava a board something like:
     
+    1 | 0 | 0
+    ----------
+    0 | 1 | 0
+    ----------
+    0 | 0 | 1
+    
+    where 1 is a populated unique square and 0 is empty
+    */
+   
+   // try and solve the board
+    let board = new Board(givens);
+    let solvable = board.solveBoard();''
+
+    // returning to test generation
+    if (solvable) {
+        return board;
+    }
+
+    // TODO: systematically remove elements and return solvable board
+        // may need to check solvability after each removal to make sure it is unique
+
 }
 
 /*  ------------------------------------------
@@ -187,7 +223,9 @@ let testBoard = [
     [0, 0, 7, 0, 4, 0, 2, 0, 3 ]
 ];
 
-let board = new Board(testBoard);
-board.renderCells();
-board.solveBoard();
-board.updateCells();
+// let board = new Board(testBoard);
+// board.renderCells();
+// board.solveBoard();
+// board.updateCells();
+let boardGen = genereateBoard();
+boardGen.renderCells();
