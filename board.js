@@ -162,7 +162,7 @@ class Board {
 			}
 		}
 	   
-	   // try and solve the board
+	    // try and solve the board
 		let board = new Board(givens);
 		board.solveBoard();
 	
@@ -198,5 +198,4 @@ class Board {
 			}
 		}
 	}
-	
 }
