@@ -48,6 +48,7 @@ class Board {
                 if (this.board[row][col] == 0) {
                     for (let tryNum = 1; tryNum <= GRID_SIZE; tryNum++) {
                         if (this.isValidPlacement(row, col, tryNum)) {
+
                             this.board[row][col] = tryNum;
                             if (this.solveBoard()) {
                                 return true;
@@ -63,63 +64,47 @@ class Board {
         return true;
     }
 
-    updateCells() {
-        for (let row = 0; row < GRID_SIZE; row++) {
-            for (let col = 0; col < GRID_SIZE; col++) {
-                if (this.board[row][col] == 0) {
-                    console.log("didn't update");
-                } else 
-                    document.getElementById('c'+col+'r'+row).textContent = this.board[row][col];
-            }
-        }
-    }
-
-    // TODO: need to refactor into two functions for simplicity
     renderCells() {
-        
-        let output = document.createDocumentFragment();
-        let input = document.createDocumentFragment();
+
+        let cellGroup = document.createDocumentFragment();
 
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++){
 
-                let cellInput = document.createElement('input');
-                cellInput.type = 'number';
-                cellInput.id = 'input-c' + col + 'r' + row;
-                cellInput.classList.add('grid-item');
-
-                let cell = document.createElement('div');
-                cell.id = 'c' + col + 'r' + row;
+                let cell;
+                if (this.board[row][col] == 0) {
+                    cell = document.createElement('input');
+                    cell.type = 'number';
+                    cell.min = '1';
+                    cell.max = '9';
+                } else {
+                    cell = document.createElement('div');
+                    cell.classList.add('given');
+                }
+                cell.id = 'row' + row + '-col' + col;
                 cell.classList.add('grid-item');
 
                 if (col % 3 == 0 && col != 0) {
                     cell.classList.add('verticle-space');
-                    cellInput.classList.add('verticle-space');
                 }
                 if (row % 3 == 0 && row != 0) {
                     cell.classList.add('horizontal-space');
-                    cellInput.classList.add('horizontal-space');
                 }
 
                 if (col == 0 && row == 0) {
                     cell.classList.add('top-left-edge');
-                    cellInput.classList.add('top-left-edge');
                 } else if (col == 0 && row == 8) {
                     cell.classList.add('bottom-left-edge');
-                    cellInput.classList.add('bottom-left-edge');
                 } else if (col == 8 && row == 0) {
                     cell.classList.add('top-right-edge');
-                    cellInput.classList.add('top-right-edge');
                 } else if (col == 8 && row == 8) {
                     cell.classList.add('bottom-right-edge');
-                    cellInput.classList.add('bottom-right-edge');
                 }
 
-                if (this.board[row][col] != 0)
+                if (this.board[row][col] != 0) {
                     cell.textContent = this.board[row][col];
-                cellInput.placeholder = this.board[row][col];
-                output.appendChild(cell);
-                input.appendChild(cellInput);
+                }
+                cellGroup.appendChild(cell);
             }
         }
 
@@ -127,15 +112,11 @@ class Board {
         submit.type = 'submit';
         submit.id = 'submit-button';
         submit.classList.add('submit-btn');
-        input.appendChild(submit);
-
-        
-        // uncomment when used again
-        // document.getElementById('board-input').appendChild(input);
-        document.getElementById('board-output').appendChild(output);
+        cellGroup.appendChild(submit);
+        document.getElementById('board').appendChild(cellGroup);
     }
 
-	static genereateBoard() {
+	static generateBoard() {
 
 		// create board object & initialize values to 0
 		let givens = new Array(GRID_SIZE);

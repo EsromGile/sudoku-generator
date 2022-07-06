@@ -14,7 +14,19 @@ let testBoard = [
     [0, 0, 7, 0, 4, 0, 2, 0, 3 ]
 ];
 
-let boardGen = Board.genereateBoard();
+let boardGen = Board.generateBoard();
 boardGen.renderCells();
-// boardGen.solveBoard();
-// boardGen.updateCells();
+
+function test() {
+    const myNode = document.getElementById("board");
+    myNode.innerHTML = '';
+    boardGen.solveBoard();
+    boardGen.renderCells();
+}
+
+function generateBoard() {
+    const myNode = document.getElementById("board");
+    myNode.innerHTML = '';
+    boardGen = Board.generateBoard();
+    boardGen.renderCells();
+}

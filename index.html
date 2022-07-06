@@ -9,11 +9,10 @@
 </head>
 <body>
 
-    <div class="board-row">
-        <!-- <form class="grid-container" id="board-input"></div> -->
-        <!-- for now this is not needed || implement after the input and algorithm are processed -->
-        <div class="grid-container" id="board-output"></div>
-    </div>
+    <form class="board" onsubmit="test()">
+        <div class="grid-container" id="board"></div>
+    </form>
+    <button onclick="generateBoard()">Generate</button>
 
     <script src="board.js"></script>
     <script src="index.js"></script>

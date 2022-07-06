@@ -1,9 +1,27 @@
 body {
     background: gray;
 }
-.board-row {
+.board {
     display: flex;
     align-items: center;
+}
+input[type="number"]
+{
+    font-size:27px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    display: inline-block;
+    text-align: right;
+}
+input[type="submit"],
+input[type="button"]
+{
+    margin-top: 10px;
+    padding: 5px 15px;
+    background: #99e0b2;
+    border: 0 none;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 /* ------------ grid ------------- */
@@ -24,11 +42,13 @@ body {
 .grid-item {
     background-color: lightgray;
 	border: 1px solid black;
-	padding: 13px 0;
-	font-size: 20px;
-    font-weight: bold;
-    color: rgb(60, 145, 133);
+	padding: 7px 0;
+	font-size: 27px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 	text-align: center;
+}
+.given {
+    color: rgb(60, 145, 133);
 }
 .submit-btn {
     margin-left: auto;
