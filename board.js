@@ -66,7 +66,8 @@ class Board {
 
     renderCells() {
 
-        let cellGroup = document.createDocumentFragment();
+        let inputGroup = document.createDocumentFragment();
+        let outputGroup = document.createDocumentFragment();
 
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++){
@@ -104,16 +105,13 @@ class Board {
                 if (this.board[row][col] != 0) {
                     cell.textContent = this.board[row][col];
                 }
-                cellGroup.appendChild(cell);
+                let cellClone = cell.cloneNode(true);
+                inputGroup.appendChild(cell);
+                outputGroup.appendChild(cellClone);
             }
         }
-
-        let submit = document.createElement('input');
-        submit.type = 'submit';
-        submit.id = 'submit-button';
-        submit.classList.add('submit-btn');
-        cellGroup.appendChild(submit);
-        document.getElementById('board').appendChild(cellGroup);
+        document.getElementById('board-input').appendChild(inputGroup);
+        document.getElementById('board-output').appendChild(outputGroup);
     }
 
 	static generateBoard() {
