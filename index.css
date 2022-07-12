@@ -40,6 +40,7 @@ input[type="number"]
 	font-size: 27px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 	text-align: center;
+    color: gray;
 }
 .given {
     color: rgb(60, 145, 133);

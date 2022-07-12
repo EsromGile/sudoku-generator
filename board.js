@@ -1,35 +1,42 @@
 const GRID_SIZE = 9;
 const GIVEN_NUM = 20;
 
+class Coord {
+    constructor(val, given) {
+        this.val = val;
+        this.given = given;
+    }
+}
+
 class Board {
 
     constructor(givens) {
         this.board = givens;
     }
 
-    isNumberInRow(row, val) {
+    isNumberInRow(row, value) {
         for (let col = 0; col < GRID_SIZE; col++) {
-            if (this.board[row][col] == val) 
+            if (this.board[row][col].val == value) 
                 return true;
         }
         return false;
     }
 
-    isNumberInCol(col, val) {
+    isNumberInCol(col, value) {
         for (let row = 0; row < GRID_SIZE; row++) {
-            if (this.board[row][col] == val) 
+            if (this.board[row][col].val == value) 
                 return true;
         }
         return false;
     }
 
-    isNumberInSquare(row, col, val) {
+    isNumberInSquare(row, col, value) {
         let localRow = row - row % 3;
         let localCol = col - col % 3;
 
         for (let rowIndex = localRow; rowIndex < (localRow + 3); rowIndex++) {
             for (let colIndex = localCol; colIndex < (localCol + 3); colIndex++) {
-                if (this.board[rowIndex][colIndex] == val)
+                if (this.board[rowIndex][colIndex].val == value)
                     return true;
             }
         }
@@ -45,15 +52,15 @@ class Board {
     solveBoard() {
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++) {
-                if (this.board[row][col] == 0) {
+                if (this.board[row][col].val == 0) {
                     for (let tryNum = 1; tryNum <= GRID_SIZE; tryNum++) {
                         if (this.isValidPlacement(row, col, tryNum)) {
 
-                            this.board[row][col] = tryNum;
+                            this.board[row][col].val = tryNum;
                             if (this.solveBoard()) {
                                 return true;
                             } else {
-                                this.board[row][col] = 0;
+                                this.board[row][col].val = 0;
                             }
                         }
                     }
@@ -64,24 +71,17 @@ class Board {
         return true;
     }
 
-    renderCells() {
-
-        let inputGroup = document.createDocumentFragment();
+    renderSolved() {
         let outputGroup = document.createDocumentFragment();
 
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++){
 
-                let cell;
-                if (this.board[row][col] == 0) {
-                    cell = document.createElement('input');
-                    cell.type = 'number';
-                    cell.min = '1';
-                    cell.max = '9';
-                } else {
-                    cell = document.createElement('div');
+                let cell = document.createElement('div');
+                if (this.board[row][col].given) {
                     cell.classList.add('given');
-                }
+                } 
+
                 cell.id = 'row' + row + '-col' + col;
                 cell.classList.add('grid-item');
 
@@ -102,26 +102,68 @@ class Board {
                     cell.classList.add('bottom-right-edge');
                 }
 
-                if (this.board[row][col] != 0) {
-                    cell.textContent = this.board[row][col];
+                if (this.board[row][col].val != 0) {
+                    cell.textContent = this.board[row][col].val;
                 }
-                let cellClone = cell.cloneNode(true);
-                inputGroup.appendChild(cell);
-                outputGroup.appendChild(cellClone);
+                outputGroup.appendChild(cell);
             }
         }
-        document.getElementById('board-input').appendChild(inputGroup);
-        document.getElementById('board-output').appendChild(outputGroup);
+        document.getElementById('board').appendChild(outputGroup);
+    }
+
+    renderCells() {
+        let outputGroup = document.createDocumentFragment();
+
+        for (let row = 0; row < GRID_SIZE; row++) {
+            for (let col = 0; col < GRID_SIZE; col++){
+
+                let cell;
+                if (this.board[row][col].given) {
+                    cell = document.createElement('div');
+                    cell.classList.add('given');
+                } else {
+                    cell = document.createElement('input');
+                    cell.min = '1';
+                    cell.max = '9';
+                }
+
+                cell.id = 'row' + row + '-col' + col;
+                cell.classList.add('grid-item');
+
+                if (col % 3 == 0 && col != 0) {
+                    cell.classList.add('verticle-space');
+                }
+                if (row % 3 == 0 && row != 0) {
+                    cell.classList.add('horizontal-space');
+                }
+
+                if (col == 0 && row == 0) {
+                    cell.classList.add('top-left-edge');
+                } else if (col == 0 && row == 8) {
+                    cell.classList.add('bottom-left-edge');
+                } else if (col == 8 && row == 0) {
+                    cell.classList.add('top-right-edge');
+                } else if (col == 8 && row == 8) {
+                    cell.classList.add('bottom-right-edge');
+                }
+
+                if (this.board[row][col].val != 0) {
+                    cell.textContent = this.board[row][col].val;
+                }
+                outputGroup.appendChild(cell);
+            }
+        }
+        document.getElementById('board').appendChild(outputGroup);
     }
 
 	static generateBoard() {
 
 		// create board object & initialize values to 0
 		let givens = new Array(GRID_SIZE);
-		for (let i = 0; i < GRID_SIZE; i++) {
-			givens[i] = new Array(GRID_SIZE);
-			for (let j = 0; j < GRID_SIZE; j++) {
-				givens[i][j] = 0;
+		for (let row = 0; row < GRID_SIZE; row++) {
+			givens[row] = new Array(GRID_SIZE);
+			for (let col = 0; col < GRID_SIZE; col++) {
+				givens[row][col] = new Coord(0, false);
 			}
 		}
 	
@@ -136,7 +178,7 @@ class Board {
 			for (let row = localRow; row < localRow + 3; row++) {
 				for (let col = localCol; col < localCol + 3; col++) {
 					let rand = Math.floor(Math.random() * arrayLength--);
-					givens[row][col] = array.splice(rand, 1);
+					givens[row][col].val = array.splice(rand, 1);
 				}
 			}
 		}
@@ -145,36 +187,26 @@ class Board {
 		let board = new Board(givens);
 		board.solveBoard();
 	
-		// remove random elements from the board -- once at given num, make sure still solvable
-		while (true) {
-	
-			let count = 81 - GIVEN_NUM;
-			while (count != 0) {
-				
-				let row = Math.floor(Math.random() * GRID_SIZE);
-				let col = Math.floor(Math.random() * GRID_SIZE);
-			
-				if (board.board[row][col] != 0) {
-					count--;
-					board.board[row][col] = 0;
-				}
-	
-			}
-			
-			// create temp board
-			let matrix = new Array(GRID_SIZE);
-			for (let row = 0; row < GRID_SIZE; row++) {
-				matrix[row] = new Array(GRID_SIZE);
-				for (let col = 0; col < GRID_SIZE; col++) {
-					matrix[row][col] = board.board[row][col];
-				}
-			}
-			let testBoard = new Board(matrix);
-	
-			// test to make sure that the boards are unique enought to solve again
-			if (testBoard.solveBoard()) {
-				return board;
-			}
-		}
+        let count = 81 - GIVEN_NUM;
+        while (count != 0) {
+            
+            let row = Math.floor(Math.random() * GRID_SIZE);
+            let col = Math.floor(Math.random() * GRID_SIZE);
+        
+            if (board.board[row][col].val != 0) {
+                count--;
+                board.board[row][col].val = 0;
+            }
+
+        }
+
+        for (let row = 0; row < GRID_SIZE; row++) {
+            for (let col = 0; col < GRID_SIZE; col++) {
+                if (board.board[row][col].val != 0) {
+                    board.board[row][col].given = true;
+                }
+            }
+        }
+        return board;
 	}
 }

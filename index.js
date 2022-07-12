@@ -17,20 +17,19 @@ let testBoard = [
 let boardInput = Board.generateBoard();
 boardInput.renderCells();
 
-function test() {
-    const input = document.getElementById("board-input");
-    const output = document.getElementById("board-output");
-    input.innerHTML = '';
+function resetBoards() {
+    const output = document.getElementById("board");
     output.innerHTML = '';
+}
+
+function test() {
+    resetBoards();
     boardInput.solveBoard();
-    boardInput.renderCells();
+    boardInput.renderSolved();
 }
 
 function generateBoard() {
-    const input = document.getElementById("board-input");
-    const output = document.getElementById("board-output");
-    input.innerHTML = '';
-    output.innerHTML = '';
+    resetBoards();
     boardInput = Board.generateBoard();
     boardInput.renderCells();
 }
