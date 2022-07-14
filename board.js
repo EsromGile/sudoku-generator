@@ -1,5 +1,5 @@
 const GRID_SIZE = 9;
-const GIVEN_NUM = 20;
+const GIVEN_NUM = 25;
 
 class Coord {
     constructor(val, given) {
@@ -72,47 +72,43 @@ class Board {
     }
 
     renderSolved() {
-        let outputGroup = document.createDocumentFragment();
+        const output = document.getElementById("board");
+        const outputGroup = document.createDocumentFragment();
 
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++){
 
+                let oldCell = document.getElementById('row'+row+'-col'+col);
                 let cell = document.createElement('div');
+                cell.classList.add('fade-in');
+                cell.classList.add('g'+ (row + col));
                 if (this.board[row][col].given) {
                     cell.classList.add('given');
                 } 
 
+                cell.textContent = oldCell.value;
                 cell.id = 'row' + row + '-col' + col;
                 cell.classList.add('grid-item');
 
-                if (col % 3 == 0 && col != 0) {
-                    cell.classList.add('verticle-space');
-                }
-                if (row % 3 == 0 && row != 0) {
-                    cell.classList.add('horizontal-space');
-                }
+                this.addBoarders(cell, row, col);
 
-                if (col == 0 && row == 0) {
-                    cell.classList.add('top-left-edge');
-                } else if (col == 0 && row == 8) {
-                    cell.classList.add('bottom-left-edge');
-                } else if (col == 8 && row == 0) {
-                    cell.classList.add('top-right-edge');
-                } else if (col == 8 && row == 8) {
-                    cell.classList.add('bottom-right-edge');
+                if (this.board[row][col].given) { /* do nothing */ }
+                else if (this.board[row][col].val != cell.textContent) {
+                    cell.classList.add('wrong-answer');
+                } else {
+                    cell.classList.add('right-answer');
                 }
-
-                if (this.board[row][col].val != 0) {
-                    cell.textContent = this.board[row][col].val;
-                }
+                cell.textContent = this.board[row][col].val;
                 outputGroup.appendChild(cell);
             }
         }
-        document.getElementById('board').appendChild(outputGroup);
+        output.innerHTML = '';
+        output.appendChild(outputGroup);
     }
 
-    renderCells() {
-        let outputGroup = document.createDocumentFragment();
+    renderGenerated() {
+        const output = document.getElementById("board");
+        const outputGroup = document.createDocumentFragment();
 
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++){
@@ -126,26 +122,13 @@ class Board {
                     cell.min = '1';
                     cell.max = '9';
                 }
+                cell.classList.add('fade-in');
+                cell.classList.add('g'+ (row + col));
 
                 cell.id = 'row' + row + '-col' + col;
                 cell.classList.add('grid-item');
 
-                if (col % 3 == 0 && col != 0) {
-                    cell.classList.add('verticle-space');
-                }
-                if (row % 3 == 0 && row != 0) {
-                    cell.classList.add('horizontal-space');
-                }
-
-                if (col == 0 && row == 0) {
-                    cell.classList.add('top-left-edge');
-                } else if (col == 0 && row == 8) {
-                    cell.classList.add('bottom-left-edge');
-                } else if (col == 8 && row == 0) {
-                    cell.classList.add('top-right-edge');
-                } else if (col == 8 && row == 8) {
-                    cell.classList.add('bottom-right-edge');
-                }
+                this.addBoarders(cell, row, col);
 
                 if (this.board[row][col].val != 0) {
                     cell.textContent = this.board[row][col].val;
@@ -153,14 +136,58 @@ class Board {
                 outputGroup.appendChild(cell);
             }
         }
-        document.getElementById('board').appendChild(outputGroup);
+        output.innerHTML = '';
+        output.appendChild(outputGroup);
+    }
+
+    renderCleared() {
+        const output = document.getElementById("board");
+        const outputGroup = document.createDocumentFragment();
+
+        for (let row = 0; row < GRID_SIZE; row++) {
+            for (let col = 0; col < GRID_SIZE; col++){
+
+                let cell = document.createElement('input');
+                cell.min = '1';
+                cell.max = '9';
+                cell.classList.add('clear');
+                cell.classList.add('g'+ (row + col));
+
+                cell.id = 'row' + row + '-col' + col;
+                cell.classList.add('grid-item');
+
+                this.addBoarders(cell, row, col);
+                outputGroup.appendChild(cell);
+            }
+        }
+        output.innerHTML = '';
+        output.appendChild(outputGroup);
+    }
+
+    addBoarders(cell, row, col) {
+        if (col % 3 == 0 && col != 0) {
+            cell.classList.add('verticle-space');
+        }
+        if (row % 3 == 0 && row != 0) {
+            cell.classList.add('horizontal-space');
+        }
+
+        if (col == 0 && row == 0) {
+            cell.classList.add('top-left-edge');
+        } else if (col == 0 && row == 8) {
+            cell.classList.add('bottom-left-edge');
+        } else if (col == 8 && row == 0) {
+            cell.classList.add('top-right-edge');
+        } else if (col == 8 && row == 8) {
+            cell.classList.add('bottom-right-edge');
+        }
     }
 
 	static generateBoard() {
-
 		// create board object & initialize values to 0
 		let givens = new Array(GRID_SIZE);
 		for (let row = 0; row < GRID_SIZE; row++) {
+            
 			givens[row] = new Array(GRID_SIZE);
 			for (let col = 0; col < GRID_SIZE; col++) {
 				givens[row][col] = new Coord(0, false);

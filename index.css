@@ -18,6 +18,71 @@ input[type="number"]
     text-align: right;
 }
 
+/* ------------- Cell Fade ------------ */
+.fade-in {
+    animation-name: fadeIn;
+    animation-duration: 0.6s;
+    animation-fill-mode: backwards;
+}
+.clear {
+    animation-name: clear;
+    animation-duration: 0.6s;
+    animation-fill-mode: backwards;
+}
+.g0 {
+    animation-delay: 0s;
+}.g1 {
+    animation-delay: 0.05s;
+}.g2 {
+    animation-delay: 0.1s;
+}.g3 {
+    animation-delay: 0.15s;
+}.g4 {
+    animation-delay: 0.2s;
+}.g5 {
+    animation-delay: 0.25s;
+}.g6 {
+    animation-delay: 0.3s;
+}.g7 {
+    animation-delay: 0.35s;
+}.g8 {
+    animation-delay: 0.4s;
+}.g9 {
+    animation-delay: 0.45s;
+}.g10 {
+    animation-delay: 0.5s;
+}.g11 {
+    animation-delay: 0.55s;
+}.g12 {
+    animation-delay: 0.6s;
+}.g13 {
+    animation-delay: 0.65s;
+}.g14 {
+    animation-delay: 0.7s;
+}.g15 {
+    animation-delay: 0.75s;
+}.g16 {
+    animation-delay: 0.8s;
+}
+@keyframes fadeIn {
+    from {
+        font-size: 0px;
+    }
+    to {
+        font-size: 27px;
+    }
+}
+@keyframes clear {
+    from {
+        opacity: 0;
+        background: darkblue;
+    } 
+    to {
+        opacity: 1;
+        background: lightgrey;
+    }
+}
+/* ------------------------------- */
 /* ------------ grid ------------- */
 .grid-container {
 	display: grid;
@@ -40,10 +105,16 @@ input[type="number"]
 	font-size: 27px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 	text-align: center;
-    color: gray;
+    color: rgb(103, 103, 103);
 }
 .given {
-    color: rgb(60, 145, 133);
+    color: rgb(0, 0, 0);
+}
+.wrong-answer {
+    color: rgb(155, 5, 5);
+}
+.right-answer {
+    color: darkblue;
 }
 .submit-btn {
     margin-left: auto;

@@ -14,22 +14,19 @@ let testBoard = [
     [0, 0, 7, 0, 4, 0, 2, 0, 3 ]
 ];
 
-let boardInput = Board.generateBoard();
-boardInput.renderCells();
+let board = new Board();
+clearBoard();
 
-function resetBoards() {
-    const output = document.getElementById("board");
-    output.innerHTML = '';
+function clearBoard() {
+    board.renderCleared();
 }
 
-function test() {
-    resetBoards();
-    boardInput.solveBoard();
-    boardInput.renderSolved();
+function solveBoard() {
+    board.solveBoard();
+    board.renderSolved();
 }
 
 function generateBoard() {
-    resetBoards();
-    boardInput = Board.generateBoard();
-    boardInput.renderCells();
+    board = Board.generateBoard();
+    board.renderGenerated();
 }
