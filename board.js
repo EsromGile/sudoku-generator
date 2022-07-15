@@ -14,6 +14,10 @@ class Board {
         this.board = givens;
     }
 
+    /* ------------------------------- */
+    /* ----------- Helpers ----------- */
+    /* ------------------------------- */
+
     isNumberInRow(row, value) {
         for (let col = 0; col < GRID_SIZE; col++) {
             if (this.board[row][col].val == value) 
@@ -49,6 +53,28 @@ class Board {
                 !this.isNumberInSquare(row, col, val);
     }
 
+    addBoarders(cell, row, col) {
+        if (col % 3 == 0 && col != 0) {
+            cell.classList.add('verticle-space');
+        }
+        if (row % 3 == 0 && row != 0) {
+            cell.classList.add('horizontal-space');
+        }
+
+        if (col == 0 && row == 0) {
+            cell.classList.add('top-left-edge');
+        } else if (col == 0 && row == 8) {
+            cell.classList.add('bottom-left-edge');
+        } else if (col == 8 && row == 0) {
+            cell.classList.add('top-right-edge');
+        } else if (col == 8 && row == 8) {
+            cell.classList.add('bottom-right-edge');
+        }
+    }
+    /* ------------------------------- */
+    /* ------------ Solving ---------- */
+    /* ------------------------------- */
+
     solveBoard() {
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++) {
@@ -70,7 +96,6 @@ class Board {
         }
         return true;
     }
-
     renderSolved() {
         const output = document.getElementById("board");
         const outputGroup = document.createDocumentFragment();
@@ -106,6 +131,10 @@ class Board {
         output.appendChild(outputGroup);
     }
 
+    /* ------------------------------- */
+    /* ---------- Generating --------- */
+    /* ------------------------------- */
+
     renderGenerated() {
         const output = document.getElementById("board");
         const outputGroup = document.createDocumentFragment();
@@ -140,55 +169,7 @@ class Board {
         output.appendChild(outputGroup);
     }
 
-    renderCleared() {
-        const output = document.getElementById("board");
-        const outputGroup = document.createDocumentFragment();
-
-        for (let row = 0; row < GRID_SIZE; row++) {
-            for (let col = 0; col < GRID_SIZE; col++){
-
-                let oldCell = document.getElementById('row'+row+'-col'+col);
-                let cell = document.createElement('input');
-
-                if (oldCell != null) {
-                    cell.placeholder = oldCell.innerHTML;
-                }
-                cell.min = '1';
-                cell.max = '9';
-                cell.classList.add('clear');
-                cell.classList.add('g'+ (row + col));
-
-                cell.id = 'row' + row + '-col' + col;
-                cell.classList.add('grid-item');
-
-                this.addBoarders(cell, row, col);
-                outputGroup.appendChild(cell);
-            }
-        }
-        output.innerHTML = '';
-        output.appendChild(outputGroup);
-    }
-
-    addBoarders(cell, row, col) {
-        if (col % 3 == 0 && col != 0) {
-            cell.classList.add('verticle-space');
-        }
-        if (row % 3 == 0 && row != 0) {
-            cell.classList.add('horizontal-space');
-        }
-
-        if (col == 0 && row == 0) {
-            cell.classList.add('top-left-edge');
-        } else if (col == 0 && row == 8) {
-            cell.classList.add('bottom-left-edge');
-        } else if (col == 8 && row == 0) {
-            cell.classList.add('top-right-edge');
-        } else if (col == 8 && row == 8) {
-            cell.classList.add('bottom-right-edge');
-        }
-    }
-
-	static generateBoard() {
+    static generateBoard() {
 		// create board object & initialize values to 0
 		let givens = new Array(GRID_SIZE);
 		for (let row = 0; row < GRID_SIZE; row++) {
@@ -241,4 +222,35 @@ class Board {
         }
         return board;
 	}
+    /* ------------------------------- */
+    /* ----------- Clearing ---------- */
+    /* ------------------------------- */
+    renderCleared() {
+        const output = document.getElementById("board");
+        const outputGroup = document.createDocumentFragment();
+
+        for (let row = 0; row < GRID_SIZE; row++) {
+            for (let col = 0; col < GRID_SIZE; col++){
+
+                let oldCell = document.getElementById('row'+row+'-col'+col);
+                let cell = document.createElement('input');
+
+                if (oldCell != null) {
+                    cell.placeholder = oldCell.innerHTML;
+                }
+                cell.min = '1';
+                cell.max = '9';
+                cell.classList.add('clear');
+                cell.classList.add('g'+ (row + col));
+
+                cell.id = 'row' + row + '-col' + col;
+                cell.classList.add('grid-item');
+
+                this.addBoarders(cell, row, col);
+                outputGroup.appendChild(cell);
+            }
+        }
+        output.innerHTML = '';
+        output.appendChild(outputGroup);
+    }
 }
