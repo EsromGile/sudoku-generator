@@ -80,8 +80,6 @@ class Board {
 
                 let oldCell = document.getElementById('row'+row+'-col'+col);
                 let cell = document.createElement('div');
-                cell.classList.add('fade-in');
-                cell.classList.add('g'+ (row + col));
                 if (this.board[row][col].given) {
                     cell.classList.add('given');
                 } 
@@ -95,6 +93,8 @@ class Board {
                 if (this.board[row][col].given) { /* do nothing */ }
                 else if (this.board[row][col].val != cell.textContent) {
                     cell.classList.add('wrong-answer');
+                    cell.classList.add('fade-in');
+                    cell.classList.add('g'+ (row + col));
                 } else {
                     cell.classList.add('right-answer');
                 }
@@ -147,7 +147,12 @@ class Board {
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++){
 
+                let oldCell = document.getElementById('row'+row+'-col'+col);
                 let cell = document.createElement('input');
+
+                if (oldCell != null) {
+                    cell.placeholder = oldCell.innerHTML;
+                }
                 cell.min = '1';
                 cell.max = '9';
                 cell.classList.add('clear');

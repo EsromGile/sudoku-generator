@@ -1,5 +1,24 @@
+/* ------------------------------- */
+/* ---------- General ------------ */
+/* ------------------------------- */
+:root {
+    --background: #e3dcd2;
+    --filler: #100c0d;
+    --wrong: #cc8b65;
+    --right: #076b55;
+    --highlight: #f4eee4;
+}
 body {
-    background: gray;
+    height: 100%;
+    background-attachment: fixed; 
+    /* For browsers that do not support gradients */
+    background-color: var(--background); 
+    background-image: linear-gradient(
+        to bottom right, 
+        var(--filler), 
+        var(--right)
+    );
+    overflow-x: hidden;
 }
 .center {
     justify-content: center;
@@ -10,15 +29,31 @@ body {
     left: 40%;
   
 }
-input[type="number"]
-{
+input[type="number"] {
     font-size:27px;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     display: inline-block;
     text-align: right;
 }
-
-/* ------------- Cell Fade ------------ */
+::placeholder {
+    color: var(--filler);
+}
+/* ------------------------------- */
+/* ----------- Buttons ----------- */
+/* ------------------------------- */
+.btn {
+    color: var(--background);
+}
+.btn:focus,
+.btn:hover {
+    color: var(--highlight);
+}
+.btn:disabled {
+    color: var(--filler);
+}
+/* ------------------------------- */
+/* ---------- Cell Fade ---------- */
+/* ------------------------------- */
 .fade-in {
     animation-name: fadeIn;
     animation-duration: 0.6s;
@@ -26,7 +61,7 @@ input[type="number"]
 }
 .clear {
     animation-name: clear;
-    animation-duration: 0.6s;
+    animation-duration: 1s;
     animation-fill-mode: backwards;
 }
 .g0 {
@@ -74,16 +109,15 @@ input[type="number"]
 }
 @keyframes clear {
     from {
-        opacity: 0;
-        background: darkblue;
+        font-size: 27px;
     } 
     to {
-        opacity: 1;
-        background: lightgrey;
+        font-size: 0px;
     }
 }
 /* ------------------------------- */
-/* ------------ grid ------------- */
+/* ------------ Grid ------------- */
+/* ------------------------------- */
 .grid-container {
 	display: grid;
     margin-left: auto;
@@ -94,38 +128,15 @@ input[type="number"]
 	grid-template-columns: repeat(9, 50px);
     grid-template-rows: repeat(9, 50px);
 	padding: 0px;
-    border: 3px solid black;
-    background: black;
+    border: 3px solid var(--filler);
+    background: var(--background);
     border-radius: 10px;
 }
-.grid-item {
-    background-color: lightgray;
-	border: 1px solid black;
-	padding: 3px 0;
-	font-size: 27px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-	text-align: center;
-    color: rgb(103, 103, 103);
-}
-.given {
-    color: rgb(0, 0, 0);
-}
-.wrong-answer {
-    color: rgb(155, 5, 5);
-}
-.right-answer {
-    color: darkblue;
-}
-.submit-btn {
-    margin-left: auto;
-    margin-right: auto;
-    align-items: center;
-}
 .verticle-space {
-    border-left: 3px solid black;
+    border-left: 3px solid var(--filler);
 }
 .horizontal-space {
-    border-top: 3px solid black;
+    border-top: 3px solid var(--filler);
 }
 .top-left-edge {
     border-top-left-radius: 7px;
@@ -140,3 +151,44 @@ input[type="number"]
     border-bottom-right-radius: 7px;
 }
 /* ------------------------------- */
+/* --------- Grid Items ---------- */
+/* ------------------------------- */
+.grid-item {
+    background-color: var(--background);
+	border: 1px solid var(--filler);
+	padding: 3px 0;
+	font-size: 27px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+	text-align: center;
+    color: var(--right);
+}
+.grid-item:hover {
+    border: 2px solid var(--filler);
+}
+.grid-item:focus {
+    outline: none;
+    animation: blink-animation 0.5s 
+        steps(2, start) infinite;
+}
+@keyframes blink-animation {
+    from {
+        border: 1px solid var(--filler);
+    }
+    to {
+        border: 3px solid var(--filler);
+    }
+} 
+.given {
+    color: var(--filler)
+}
+.wrong-answer {
+    /* background-color: var(--wrong); */
+    color: var(--wrong);
+}
+.right-answer {
+    /* background-color: var(--right); */
+    color: var(--right);
+}
+.highlighted {
+    background-color: var(--highlight);
+}
