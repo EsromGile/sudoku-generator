@@ -7,6 +7,7 @@
     --wrong: #cc8b65;
     --right: #076b55;
     --highlight: #f4eee4;
+    --shadow: #2a2123;
 }
 body {
     height: 100%;
@@ -61,8 +62,8 @@ input[type="number"] {
 }
 .clear {
     animation-name: clear;
-    animation-duration: 1s;
-    animation-fill-mode: backwards;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
 }
 .g0 {
     animation-delay: 0s;
@@ -110,9 +111,11 @@ input[type="number"] {
 @keyframes clear {
     from {
         font-size: 27px;
+        opacity: 0;
     } 
     to {
         font-size: 0px;
+        opacity: 1;
     }
 }
 /* ------------------------------- */
@@ -161,6 +164,7 @@ input[type="number"] {
 /* ------------ Grid ------------- */
 /* ------------------------------- */
 .grid-container {
+    color: var(--shadow);
 	display: grid;
     margin-left: auto;
     margin-right: auto;
@@ -171,8 +175,9 @@ input[type="number"] {
     grid-template-rows: repeat(9, 50px);
 	padding: 0px;
     border: 3px solid var(--filler);
-    background: var(--background);
+    background: var(--filler);
     border-radius: 10px;
+    box-shadow: 7px 7px 12px;
 }
 .verticle-space {
     border-left: 3px solid var(--filler);

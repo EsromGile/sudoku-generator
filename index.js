@@ -29,14 +29,14 @@ function clearAnimations() {
 
 function clearBoard() {
     board.renderCleared();
-    document.getElementById('solveBtn').disabled = true;
+    document.getElementById('checkBtn').disabled = true;
     addListeners();
     setTimeout(() => {
         clearAnimations();
     }, 1000);
 }
 
-function solveBoard() {
+function checkBoard() {
     board.solveBoard();
     board.renderSolved();
     addListeners();
@@ -49,7 +49,7 @@ function generateBoard() {
     board = Board.generateBoard();
     board.renderGenerated();
     addListeners();
-    document.getElementById('solveBtn').disabled = false;
+    document.getElementById('checkBtn').disabled = false;
     setTimeout(() => {
         clearAnimations();
     }, 1200);
