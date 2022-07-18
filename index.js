@@ -16,6 +16,12 @@ let testBoard = [
 /* ---------------------------*/
 /* ---------- Main -----------*/
 /* ---------------------------*/
+const EXPERT = 18;
+const HARD = 24;
+const MEDIUM = 30;
+const EASY = 35;
+const TRIVIAL = 40;
+
 function clearAnimations() {
     for (let row = 0; row < GRID_SIZE; row++) {
         for (let col = 0; col < GRID_SIZE; col++) {
@@ -45,8 +51,15 @@ function checkBoard() {
     }, 1200);
 }
 
+function solveBoard() {
+    if (board.getInput())
+        checkBoard();
+}
+
 function generateBoard() {
-    board = Board.generateBoard();
+    let selectedRadio = document.querySelector('input[name="flexRadioDefault"]:checked');
+    let givenNum = selectedRadio.value;
+    board = Board.generateBoard(givenNum);
     board.renderGenerated();
     addListeners();
     document.getElementById('checkBtn').disabled = false;

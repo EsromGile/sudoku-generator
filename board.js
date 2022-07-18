@@ -1,5 +1,4 @@
 const GRID_SIZE = 9;
-const GIVEN_NUM = 25;
 
 class Coord {
     constructor(val, given) {
@@ -75,6 +74,33 @@ class Board {
     /* ------------ Solving ---------- */
     /* ------------------------------- */
 
+    getInput() {
+        let count = 0;
+
+		for (let row = 0; row < GRID_SIZE; row++) {
+			for (let col = 0; col < GRID_SIZE; col++) {
+
+                let cell = document.getElementById('row'+row+'-col'+col).value;
+                if (cell != '') {
+
+                    console.log('cell val: ' + cell);
+
+                    this.board[row][col].val = cell;
+                    this.board[row][col].given = true;
+                    console.log('givens val: ' + this.board[row][col].val + ', given: ' + this.board[row][col].given);
+                    count += 1;
+                    console.log('count: ' + count);
+                }
+                else {
+                    this.board[row][col].val = 0;
+                    this.board[row][col].given = false;
+                }
+			}
+		}
+        
+        if (count > 16) return true
+        else return false;
+    }
     solveBoard() {
         for (let row = 0; row < GRID_SIZE; row++) {
             for (let col = 0; col < GRID_SIZE; col++) {
@@ -169,7 +195,7 @@ class Board {
         output.appendChild(outputGroup);
     }
 
-    static generateBoard() {
+    static generateBoard(givenNum) {
 		// create board object & initialize values to 0
 		let givens = new Array(GRID_SIZE);
 		for (let row = 0; row < GRID_SIZE; row++) {
@@ -200,7 +226,7 @@ class Board {
 		let board = new Board(givens);
 		board.solveBoard();
 	
-        let count = 81 - GIVEN_NUM;
+        let count = 81 - givenNum;
         while (count != 0) {
             
             let row = Math.floor(Math.random() * GRID_SIZE);

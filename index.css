@@ -52,6 +52,9 @@ input[type="number"] {
 .btn:disabled {
     color: var(--filler);
 }
+.form-check-label {
+    color: var(--background);
+}
 /* ------------------------------- */
 /* ---------- Cell Fade ---------- */
 /* ------------------------------- */
