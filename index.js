@@ -16,12 +16,6 @@ let testBoard = [
 /* ---------------------------*/
 /* ---------- Main -----------*/
 /* ---------------------------*/
-const EXPERT = 18;
-const HARD = 24;
-const MEDIUM = 30;
-const EASY = 35;
-const TRIVIAL = 40;
-
 function clearAnimations() {
     for (let row = 0; row < GRID_SIZE; row++) {
         for (let col = 0; col < GRID_SIZE; col++) {
@@ -52,8 +46,21 @@ function checkBoard() {
 }
 
 function solveBoard() {
-    if (board.getInput())
-        checkBoard();
+    let validInputs = board.getInput();
+    let validBoard;
+    console.log('valid inputs: ' + validInputs);
+    if (validInputs) {
+        validBoard = board.solveBoard();
+    }
+    console.log('valid board: ' + validBoard);
+    if (validBoard) {
+        board.renderSolved();
+        addListeners();
+        setTimeout(() => {
+            clearAnimations();
+        }, 1200);
+    }
+        
 }
 
 function generateBoard() {

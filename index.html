@@ -15,48 +15,59 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="container col">
         <div class="row">
-            <div class="grid-container" id="board"></div>
+            <div class="col-md-6">
+                <div class="grid-container" id="board"></div>
+            </div>
+            <div class="col panel" style="margin-top: 30px;">
+                <h3>Controls</h3>
+                <div class="row">
+                    <button id="genBtn" class="btn" type="button" onclick="generateBoard()">Generate</button>
+                </div>
+                <div class="row">
+                    <button id="checkBtn" class="btn" type="button" onclick="checkBoard()">Check Answer</button>
+                </div>
+                <div class="row">
+                    <button id="clearBtn" class="btn" type="button" onclick="clearBoard()">Clear</button>
+                </div>
+            </div>
+            <div class="col panel" style="margin-top: 45px;">
+                <div class="row" style="margin-left: 0; padding-left: 0;">
+                    <h3>Difficulty</h3>
+                    <div class="form-check">
+                        <input class="btn-check" type="radio" name="flexRadioDefault" id="expertRadio" value="18">
+                        <label class="btn radio" for="expertRadio">
+                            Expert
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="btn-check" type="radio" name="flexRadioDefault" id="hardRadio" value="24">
+                        <label class="btn radio" for="hardRadio">
+                            Hard
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="btn-check" type="radio" name="flexRadioDefault" id="mediumRadio" value="30" checked>
+                        <label class="btn radio" for="mediumRadio">
+                            Medium
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="btn-check" type="radio" name="flexRadioDefault" id="easyRadio" value="35">
+                        <label class="btn radio" for="easyRadio">
+                            Easy
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="btn-check" type="radio" name="flexRadioDefault" id="trivialRadio" value="40">
+                        <label class="btn radio" for="trivialRadio">
+                            Trivial
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="container center">
-        <button id="checkBtn" class="btn" type="button" onclick="checkBoard()">Check Answer</button>
-        <button id="genBtn" class="btn" type="button" onclick="generateBoard()">Generate</button>
-        <!-- currently not working -->
-        <!-- <button id="solveBtn" class="btn" type="button" onclick="solveBoard()">Solve</button> -->
-        <button id="clearBtn" class="btn" type="button" onclick="clearBoard()">Clear</button>
-    </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="expertRadio" value="18">
-        <label class="form-check-label" for="expertRadio">
-            Expert
-        </label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="hardRadio" value="24">
-        <label class="form-check-label" for="hardRadio">
-            Hard
-        </label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="mediumRadio" value="30" checked>
-        <label class="form-check-label" for="mediumRadio">
-            Medium
-        </label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="easyRadio" value="35">
-        <label class="form-check-label" for="easyRadio">
-            Easy
-        </label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="trivialRadio" value="40">
-        <label class="form-check-label" for="trivialRadio">
-            Trivial
-        </label>
     </div>
 
     <script src="board.js"></script>
